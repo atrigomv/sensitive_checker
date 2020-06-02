@@ -9,4 +9,5 @@ Below it is shown the different checks executed by the tool:
 * Spanish PII (personal data) within the content of structured files.
 * Credentials within the content of structured files.
 * DNI (spanish national ID) within the content of structured files.
+* Credit cards number within the content of structured files.
 </em>
