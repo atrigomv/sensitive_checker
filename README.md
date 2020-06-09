@@ -12,6 +12,9 @@ Below it is shown the different checks executed by the tool:
 * Credit cards number within the content of structured files.
 </em>
 
+#### Warning!
+I've used s3.objects.all function in order to get all key stored in a bucket. This function is associated with s3:GetObject permission which retrieves objects from Amazon S3 in binary format. Not use the tool in heavy buckets, it may have additional costs.
+
 ### Installation and environment configuration
 To use the tool, first of all you have to clone the git repository or download the Python script from [here](https://github.com/atrigomv/sensitive_checker/blob/master/sensitive_checker.py):
 
@@ -57,4 +60,18 @@ In order to give the exact permissions to the script, it is needed to create a n
         }
     ]
 }
+```
+
+### Basic usage
+#### Assessment of all buckets associated to the AWS account (option by default)
+```
+./sensitive_checker.py
+```
+#### Assessment of only one bucket
+```
+./sensitive_checker.py -b <S3_NAME>
+```
+#### Assessment of only one bucket without csv report and in verbose mode:
+```
+./sensitive_checker.py -c -n -v -b <S3_NAME>
 ```
