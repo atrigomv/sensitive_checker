@@ -18,3 +18,20 @@ To use the tool, first of all you have to clone the git repository or download t
 ```
 git clone git://github.com/atrigomv/sensitive_checker.git
 ```
+To execute the tool it is necessary to cover the steps below:
+* Download the tool
+* Create a programmatic user in AWS account in which there are the S3 to analyze (extract from it their secret and access keys)
+* Install Python
+* Install [Boto3](https://boto3.amazonaws.com/v1/documentation/api/latest/guide/quickstart.html) for Python:
+```
+pip install boto3
+```
+* Install [AWS CLI](https://aws.amazon.com/cli/?nc1=h_ls) and configure it with the access key and the secret access key of the user previously created:
+```
+pip install awscli
+aws configure
+```
+* Put execution permissions:
+```
+chmod +x sensitive_checker.py
+```
