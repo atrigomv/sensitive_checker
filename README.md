@@ -13,7 +13,7 @@ Below it is shown the different checks executed by the tool:
 </em>
 
 ### Installation and environment configuration
-To use the tool, first of all you have to clone the git repository or download the Python script from here:
+To use the tool, first of all you have to clone the git repository or download the Python script from [here](https://github.com/atrigomv/sensitive_checker/blob/master/sensitive_checker.py):
 
 ```
 git clone git://github.com/atrigomv/sensitive_checker.git
