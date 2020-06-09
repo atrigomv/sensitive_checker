@@ -35,3 +35,26 @@ aws configure
 ```
 chmod +x sensitive_checker.py
 ```
+### Permissions of the AWS user
+#### Basic usage
+If you chose the easy way, it is enough if the programmatic user has the next policies selected: AWSLambdaFullAccess and IAMFullAccess.
+#### Policy ad-hoc (recommended)
+In order to give the exact permissions to the script, it is needed to create a new policy with the next statement:
+```
+{
+    "Version": "2012-10-17",
+    "Statement": [
+        {
+            "Sid": "VisualEditor0",
+            "Effect": "Allow",
+            "Action": [
+                "s3:GetObject",
+                "s3:ListAllMyBuckets",
+                "s3:ListBucket",
+                "s3:GetBucketAcl"
+            ],
+            "Resource": "*"
+        }
+    ]
+}
+```
