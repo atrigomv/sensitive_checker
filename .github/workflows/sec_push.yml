@@ -1,0 +1,15 @@
+name: Security Process - Push Trigger
+run-name: Security Push
+on: [push]
+jobs:
+  security-job-push:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Get Event info
+        run: echo "${{ github }}"
+      - name: Code Checkout
+        uses: actions/checkout@v3
+      - name: Bandit Scan
+        run: |
+          docker pull opensorcery/bandit
+          docker run --rm -v ${PWD}:/code opensorcery/bandit -r /code
