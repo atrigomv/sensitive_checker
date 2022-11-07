@@ -65,19 +65,9 @@ jobs:
       #    git clone https://github.com/ScaleSec/vulnado.git
       #- name: SCA Scan
       #  run: cdxgen -r --server-url ${{ secrets.DTRACK_URL }} --api-key ${{ secrets.DTRACK_TOKEN }} --project-name gha_prueba --project-version 1
-      #- name: Initialize CodeQL
-      #  uses: github/codeql-action/init@v2
-      #  with:
-      #    languages: python
-      # Va a cascar porque no es un repositorio en el que se pueda usar CodeQL.
-      #- name: CodeQL Scan
-      #  uses: github/codeql-action/analyze@v2
-      - name: CodeQL CLI set up
-        run: |
-          wget https://github.com/github/codeql-action/releases/latest/download/codeql-bundle-linux64.tar.gz
-          ls -la
-          tar -xvzf ./codeql-bundle-linux64.tar.gz
-          pwd
-          ls -la
-          cd codeql
-          codeql resolve languages
+      - name: Initialize CodeQL
+        uses: github/codeql-action/init@v2
+        with:
+          languages: python
+      - name: CodeQL Scan
+        uses: github/codeql-action/analyze@v2
