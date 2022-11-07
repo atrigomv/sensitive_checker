@@ -79,4 +79,5 @@ jobs:
           tar -xvzf ./codeql-bundle-linux64.tar.gz
           pwd
           ls -la
+          cd codeql
           codeql resolve languages
