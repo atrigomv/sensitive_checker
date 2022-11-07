@@ -73,4 +73,7 @@ jobs:
         uses: github/codeql-action/analyze@v2
       - run: |
           pwd
-          cat /results/*.sarif
+          ls -la
+          cd results
+          ls -la
+          cat *.sarif
