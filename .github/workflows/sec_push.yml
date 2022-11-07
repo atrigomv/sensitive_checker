@@ -77,4 +77,6 @@ jobs:
           wget https://github.com/github/codeql-action/releases/latest/download/codeql-bundle-linux64.tar.gz
           ls -la
           tar -xvzf ./codeql-bundle-linux64.tar.gz
+          pwd
+          ls -la
           codeql resolve languages
