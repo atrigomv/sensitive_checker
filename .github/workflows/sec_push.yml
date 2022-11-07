@@ -1,0 +1,80 @@
+name: Security Process - Push Trigger
+run-name: Security Push
+on: [push]
+jobs:
+  pre-build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Code Checkout
+        uses: actions/checkout@v3
+      - name: Persist Artifact
+        uses: actions/upload-artifact@v3
+        with:
+          name: my-artifact
+          path: .
+
+  security-pre-build:
+    needs: pre-build
+    runs-on: ubuntu-latest
+    steps:
+      - name: Download Artifact
+        uses: actions/download-artifact@v3
+        with:
+          name: my-artifact
+      - run: ls -R
+      - name: Secret Scanning with GitLeaks
+        run: |
+          docker pull zricethezav/gitleaks:latest
+          docker run -v /tmp:/tmp -v ${PWD}:/code zricethezav/gitleaks:latest detect --source="/code" -v --log-level=debug --exit-code=0 --report-path=/tmp/gitleaks-output.json
+          # si pones exit-code=1, cuando detecta un leak casca el workflow
+      - run: cat /tmp/gitleaks-output.json
+  #sonarqube-scan:
+  #  needs: pre-build
+  #  runs-on: ubuntu-latest
+  #  steps:
+  #    - name: Download Artifact
+  #      uses: actions/download-artifact@v3
+  #      with:
+  #        name: my-artifact
+  #    - run: ls -R
+  #    - name: SonarQube Scan
+  #      uses: sonarsource/sonarqube-scan-action@master
+  #      env:
+  #        SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+  #        SONAR_HOST_URL: ${{ secrets.SONAR_HOST_URL }}
+  security-post-build:
+    needs: pre-build
+    runs-on: ubuntu-latest
+    steps:
+      - name: Download Artifact
+        uses: actions/download-artifact@v3
+        with:
+          name: my-artifact
+      - run: ls -R
+      - name: Bandit Scan
+        run: |
+          pip3 install bandit -q
+          bandit --version
+          bandit -v -r ${PWD} -f json -o /tmp/bandit-output.json --exit-zero
+      - run: cat /tmp/bandit-output.json
+      #- name: Preparing environment for SCA
+      #  run: |
+      #    sudo apt install maven
+      #    sudo apt install npm
+      #    sudo npm install -g @appthreat/cdxgen
+      #    git clone https://github.com/ScaleSec/vulnado.git
+      #- name: SCA Scan
+      #  run: cdxgen -r --server-url ${{ secrets.DTRACK_URL }} --api-key ${{ secrets.DTRACK_TOKEN }} --project-name gha_prueba --project-version 1
+      #- name: Initialize CodeQL
+      #  uses: github/codeql-action/init@v2
+      #  with:
+      #    languages: python
+      # Va a cascar porque no es un repositorio en el que se pueda usar CodeQL.
+      #- name: CodeQL Scan
+      #  uses: github/codeql-action/analyze@v2
+      - name: CodeQL CLI set up
+        run: |
+          wget https://github.com/github/codeql-action/releases/latest/download/codeql-bundle-linux64.tar.gz
+          ls -la
+          tar -xvzf ./codeql-bundle-linux64.tar.gz
+          codeql resolve languages
