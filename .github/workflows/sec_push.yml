@@ -71,3 +71,6 @@ jobs:
           languages: python
       - name: CodeQL Scan
         uses: github/codeql-action/analyze@v2
+      - run: |
+          pwd
+          cat /results/*.sarif
